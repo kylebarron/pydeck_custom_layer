@@ -1,6 +1,7 @@
 import * as turf from "@turf/turf";
-import { CompositeLayer } from "@deck.gl/core";
-import { GeoJsonLayer, TextLayer } from "@deck.gl/layers";
+const _global = typeof window === 'undefined' ? global : window;
+const {CompositeLayer, GeoJsonLayer, TextLayer} = _global.deck;
+
 
 const defaultProps = {
   // Inherit all of GeoJsonLayer's props

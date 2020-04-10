@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("deck"), require("deck"));
-	else if(typeof define === 'function' && define.amd)
-		define("LabeledGeoJsonLayerLibrary", [, ], factory);
-	else if(typeof exports === 'object')
-		exports["LabeledGeoJsonLayerLibrary"] = factory(require("deck"), require("deck"));
-	else
-		root["LabeledGeoJsonLayerLibrary"] = factory(root["deck"], root["deck"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__deck_gl_core__, __WEBPACK_EXTERNAL_MODULE__deck_gl_layers__) {
-return /******/ (function(modules) { // webpackBootstrap
+require([], function() { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -116,7 +106,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _lab
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"LabeledGeoJsonLayer\", function() { return LabeledGeoJsonLayer; });\n/* harmony import */ var _turf_turf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @turf/turf */ \"./node_modules/@turf/turf/turf.min.js\");\n/* harmony import */ var _turf_turf__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_turf_turf__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _deck_gl_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @deck.gl/core */ \"@deck.gl/core\");\n/* harmony import */ var _deck_gl_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_deck_gl_core__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _deck_gl_layers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @deck.gl/layers */ \"@deck.gl/layers\");\n/* harmony import */ var _deck_gl_layers__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_deck_gl_layers__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n\nconst defaultProps = {\n  // Inherit all of GeoJsonLayer's props\n  ..._deck_gl_layers__WEBPACK_IMPORTED_MODULE_2__[\"GeoJsonLayer\"].defaultProps,\n  // Label for each feature\n  getLabel: { type: \"accessor\", value: x => x.text },\n  // Label size for each feature\n  getLabelSize: { type: \"accessor\", value: 32 },\n  // Label color for each feature\n  getLabelColor: { type: \"accessor\", value: [0, 0, 0, 255] },\n  // Label always facing the camera\n  billboard: true,\n  // Label size units\n  labelSizeUnits: \"pixels\",\n  // Label background color\n  labelBackground: { type: \"color\", value: null, optional: true },\n  // Label font\n  fontFamily: \"Monaco, monospace\"\n};\n\nfunction getLabelAnchors(feature) {\n  const {type, coordinates} = feature.geometry;\n  switch (type) {\n    case 'Point':\n      return [coordinates];\n    case 'MultiPoint':\n      return coordinates;\n    case 'Polygon':\n      return [_turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"centerOfMass\"](feature).geometry.coordinates];\n    case 'MultiPolygon':\n      let polygons = coordinates.map(rings => _turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"polygon\"](rings));\n      const areas = polygons.map(_turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"area\"]);\n      const maxArea = Math.max.apply(null, areas);\n      // Filter out the areas that are too small\n      return polygons.filter((f, index) => areas[index] > maxArea * 0.5)\n        .map(f => _turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"centerOfMass\"](f).geometry.coordinates);\n    default:\n      return [];\n  }\n}\n\nclass LabeledGeoJsonLayer extends _deck_gl_core__WEBPACK_IMPORTED_MODULE_1__[\"CompositeLayer\"] {\n  updateState({ changeFlags }) {\n    const { data } = this.props;\n    if (changeFlags.dataChanged && data) {\n      const labelData = (data.features || data).flatMap((feature, index) => {\n        const labelAnchors = getLabelAnchors(feature);\n        return labelAnchors.map(p =>\n          this.getSubLayerRow({ position: p }, feature, index)\n        );\n      });\n\n      this.setState({ labelData });\n    }\n  }\n  renderLayers() {\n    const {\n      getLabel,\n      getLabelSize,\n      getLabelColor,\n      labelSizeUnits,\n      labelBackground,\n      billboard,\n      fontFamily\n    } = this.props;\n    return [\n      new _deck_gl_layers__WEBPACK_IMPORTED_MODULE_2__[\"GeoJsonLayer\"](this.props, this.getSubLayerProps({ id: \"geojson\" }), {\n        data: this.props.data\n      }),\n      new _deck_gl_layers__WEBPACK_IMPORTED_MODULE_2__[\"TextLayer\"](this.getSubLayerProps({ id: \"text\" }), {\n        data: this.state.labelData,\n        billboard,\n        sizeUnits: labelSizeUnits,\n        backgroundColor: labelBackground,\n        getPosition: d => d.position,\n        getText: this.getSubLayerAccessor(getLabel),\n        getSize: this.getSubLayerAccessor(getLabelSize),\n        getColor: this.getSubLayerAccessor(getLabelColor)\n      })\n    ];\n  }\n}\n\nLabeledGeoJsonLayer.layerName = \"LabeledGeoJsonLayer\";\nLabeledGeoJsonLayer.defaultProps = defaultProps;\n\n\n\n\n//# sourceURL=webpack://LabeledGeoJsonLayerLibrary/./labeled-geojson-layer.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"LabeledGeoJsonLayer\", function() { return LabeledGeoJsonLayer; });\n/* harmony import */ var _turf_turf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @turf/turf */ \"./node_modules/@turf/turf/turf.min.js\");\n/* harmony import */ var _turf_turf__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_turf_turf__WEBPACK_IMPORTED_MODULE_0__);\n\nconst _global = typeof window === 'undefined' ? global : window;\nconst {CompositeLayer, GeoJsonLayer, TextLayer} = _global.deck;\n\n\nconst defaultProps = {\n  // Inherit all of GeoJsonLayer's props\n  ...GeoJsonLayer.defaultProps,\n  // Label for each feature\n  getLabel: { type: \"accessor\", value: x => x.text },\n  // Label size for each feature\n  getLabelSize: { type: \"accessor\", value: 32 },\n  // Label color for each feature\n  getLabelColor: { type: \"accessor\", value: [0, 0, 0, 255] },\n  // Label always facing the camera\n  billboard: true,\n  // Label size units\n  labelSizeUnits: \"pixels\",\n  // Label background color\n  labelBackground: { type: \"color\", value: null, optional: true },\n  // Label font\n  fontFamily: \"Monaco, monospace\"\n};\n\nfunction getLabelAnchors(feature) {\n  const {type, coordinates} = feature.geometry;\n  switch (type) {\n    case 'Point':\n      return [coordinates];\n    case 'MultiPoint':\n      return coordinates;\n    case 'Polygon':\n      return [_turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"centerOfMass\"](feature).geometry.coordinates];\n    case 'MultiPolygon':\n      let polygons = coordinates.map(rings => _turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"polygon\"](rings));\n      const areas = polygons.map(_turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"area\"]);\n      const maxArea = Math.max.apply(null, areas);\n      // Filter out the areas that are too small\n      return polygons.filter((f, index) => areas[index] > maxArea * 0.5)\n        .map(f => _turf_turf__WEBPACK_IMPORTED_MODULE_0__[\"centerOfMass\"](f).geometry.coordinates);\n    default:\n      return [];\n  }\n}\n\nclass LabeledGeoJsonLayer extends CompositeLayer {\n  updateState({ changeFlags }) {\n    const { data } = this.props;\n    if (changeFlags.dataChanged && data) {\n      const labelData = (data.features || data).flatMap((feature, index) => {\n        const labelAnchors = getLabelAnchors(feature);\n        return labelAnchors.map(p =>\n          this.getSubLayerRow({ position: p }, feature, index)\n        );\n      });\n\n      this.setState({ labelData });\n    }\n  }\n  renderLayers() {\n    const {\n      getLabel,\n      getLabelSize,\n      getLabelColor,\n      labelSizeUnits,\n      labelBackground,\n      billboard,\n      fontFamily\n    } = this.props;\n    return [\n      new GeoJsonLayer(this.props, this.getSubLayerProps({ id: \"geojson\" }), {\n        data: this.props.data\n      }),\n      new TextLayer(this.getSubLayerProps({ id: \"text\" }), {\n        data: this.state.labelData,\n        billboard,\n        sizeUnits: labelSizeUnits,\n        backgroundColor: labelBackground,\n        getPosition: d => d.position,\n        getText: this.getSubLayerAccessor(getLabel),\n        getSize: this.getSubLayerAccessor(getLabelSize),\n        getColor: this.getSubLayerAccessor(getLabelColor)\n      })\n    ];\n  }\n}\n\nLabeledGeoJsonLayer.layerName = \"LabeledGeoJsonLayer\";\nLabeledGeoJsonLayer.defaultProps = defaultProps;\n\n\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack://LabeledGeoJsonLayerLibrary/./labeled-geojson-layer.js?");
 
 /***/ }),
 
@@ -131,27 +121,15 @@ eval("!function(t,e){ true?e(exports):undefined}(this,function(t){\"use strict\"
 
 /***/ }),
 
-/***/ "@deck.gl/core":
-/*!*********************************************************************!*\
-  !*** external {"root":"deck","commonjs":"deck","commonjs2":"deck"} ***!
-  \*********************************************************************/
+/***/ "./node_modules/webpack/buildin/global.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = __WEBPACK_EXTERNAL_MODULE__deck_gl_core__;\n\n//# sourceURL=webpack://LabeledGeoJsonLayerLibrary/external_%7B%22root%22:%22deck%22,%22commonjs%22:%22deck%22,%22commonjs2%22:%22deck%22%7D?");
-
-/***/ }),
-
-/***/ "@deck.gl/layers":
-/*!*********************************************************************!*\
-  !*** external {"commonjs":"deck","commonjs2":"deck","root":"deck"} ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = __WEBPACK_EXTERNAL_MODULE__deck_gl_layers__;\n\n//# sourceURL=webpack://LabeledGeoJsonLayerLibrary/external_%7B%22commonjs%22:%22deck%22,%22commonjs2%22:%22deck%22,%22root%22:%22deck%22%7D?");
+eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn this;\n})();\n\ntry {\n\t// This works if eval is allowed (see CSP)\n\tg = g || new Function(\"return this\")();\n} catch (e) {\n\t// This works if the window reference is available\n\tif (typeof window === \"object\") g = window;\n}\n\n// g can still be undefined, but nothing to do about it...\n// We return undefined, instead of nothing here, so it's\n// easier to handle this case. if(!global) { ...}\n\nmodule.exports = g;\n\n\n//# sourceURL=webpack://LabeledGeoJsonLayerLibrary/(webpack)/buildin/global.js?");
 
 /***/ })
 
-/******/ });
-});
+/******/ })});;
