@@ -1,4 +1,4 @@
-var LabeledGeoJSONLayerLibrary = (function (exports, core, layers) {
+var LabeledGeoJsonLayerLibrary = (function (core, layers) {
 	'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4217,7 +4217,7 @@ return d[d.length-1];};return ", funcName].join("");
 	  // Inherit all of GeoJsonLayer's props
 	  ...layers.GeoJsonLayer.defaultProps,
 	  // Label for each feature
-	  getLabel: { type: "accessor", value: x => x.text },
+	  getLabel: { type: "accessor", value: (x) => x.text },
 	  // Label size for each feature
 	  getLabelSize: { type: "accessor", value: 32 },
 	  // Label color for each feature
@@ -4229,27 +4229,28 @@ return d[d.length-1];};return ", funcName].join("");
 	  // Label background color
 	  labelBackground: { type: "color", value: null, optional: true },
 	  // Label font
-	  fontFamily: "Monaco, monospace"
+	  fontFamily: "Monaco, monospace",
 	};
 
 	function getLabelAnchors(feature) {
-	  const {type, coordinates} = feature.geometry;
+	  const { type, coordinates } = feature.geometry;
 	  switch (type) {
-	    case 'Point':
-	      return [coordinates];
-	    case 'MultiPoint':
-	      return coordinates;
-	    case 'Polygon':
-	      return [centerOfMass(feature).geometry.coordinates];
-	    case 'MultiPolygon':
-	      let polygons = coordinates.map(rings => helpers_9(rings));
+	    case "Point":
+	      return [coordinates]
+	    case "MultiPoint":
+	      return coordinates
+	    case "Polygon":
+	      return [centerOfMass(feature).geometry.coordinates]
+	    case "MultiPolygon":
+	      let polygons = coordinates.map((rings) => helpers_9(rings));
 	      const areas = polygons.map(area);
 	      const maxArea = Math.max.apply(null, areas);
 	      // Filter out the areas that are too small
-	      return polygons.filter((f, index) => areas[index] > maxArea * 0.5)
-	        .map(f => centerOfMass(f).geometry.coordinates);
+	      return polygons
+	        .filter((f, index) => areas[index] > maxArea * 0.5)
+	        .map((f) => centerOfMass(f).geometry.coordinates)
 	    default:
-	      return [];
+	      return []
 	  }
 	}
 
@@ -4259,9 +4260,9 @@ return d[d.length-1];};return ", funcName].join("");
 	    if (changeFlags.dataChanged && data) {
 	      const labelData = (data.features || data).flatMap((feature, index) => {
 	        const labelAnchors = getLabelAnchors(feature);
-	        return labelAnchors.map(p =>
+	        return labelAnchors.map((p) =>
 	          this.getSubLayerRow({ position: p }, feature, index)
-	        );
+	        )
 	      });
 
 	      this.setState({ labelData });
@@ -4275,31 +4276,37 @@ return d[d.length-1];};return ", funcName].join("");
 	      labelSizeUnits,
 	      labelBackground,
 	      billboard,
-	      fontFamily
+	      fontFamily,
 	    } = this.props;
 	    return [
 	      new layers.GeoJsonLayer(this.props, this.getSubLayerProps({ id: "geojson" }), {
-	        data: this.props.data
+	        data: this.props.data,
 	      }),
 	      new layers.TextLayer(this.getSubLayerProps({ id: "text" }), {
 	        data: this.state.labelData,
 	        billboard,
 	        sizeUnits: labelSizeUnits,
 	        backgroundColor: labelBackground,
-	        getPosition: d => d.position,
+	        getPosition: (d) => d.position,
 	        getText: this.getSubLayerAccessor(getLabel),
 	        getSize: this.getSubLayerAccessor(getLabelSize),
-	        getColor: this.getSubLayerAccessor(getLabelColor)
-	      })
-	    ];
+	        getColor: this.getSubLayerAccessor(getLabelColor),
+	      }),
+	    ]
 	  }
 	}
 
 	LabeledGeoJsonLayer.layerName = "LabeledGeoJsonLayer";
 	LabeledGeoJsonLayer.defaultProps = defaultProps;
 
-	exports.LabeledGeoJsonLayer = LabeledGeoJsonLayer;
+	/* global window, global */
+	const customLayerLibrary = {
+	  LabeledGeoJsonLayer,
+	};
 
-	return exports;
+	const _global = typeof window === "undefined" ? global : window;
+	_global.customLayerLibrary = customLayerLibrary;
 
-}({}, deck, deck));
+	return customLayerLibrary;
+
+}(deck, deck));
