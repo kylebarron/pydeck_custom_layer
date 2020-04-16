@@ -3,7 +3,7 @@ import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 
 const config = {
-  input: "index.js",
+  input: "src/bundle.js",
   output: {
     file: "dist/rollup-bundle.js",
     format: "iife",
